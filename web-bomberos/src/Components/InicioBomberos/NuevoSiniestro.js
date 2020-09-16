@@ -67,6 +67,7 @@ const useStyles = makeStyles((theme) =>
       marginRight: theme.spacing(1),
     },
     instructions: {
+      marginLeft: "10px",
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
@@ -211,10 +212,10 @@ const NuevoSiniestro = (props) => {
   
       obtenerDatos()
     } else {
-      // props.history.push('/login')
+      props.history.push('/login')
     }
-  // }, [props.history])
-}, [])
+  }, [props.history])
+// }, [])
 
 
   
@@ -240,7 +241,12 @@ const NuevoSiniestro = (props) => {
           const arraySiniestrosA = dataSiniestroA.docs.map(doc => ({ id: doc.id, ...doc.data() }))
           debugger;
           var numeroSiniestro = 0;
-          numeroSiniestro = arraySiniestrosA[0].numeroSiniestro;
+          if(arraySiniestrosA.length === 0) {
+            numeroSiniestro = 0;
+          } else {
+            numeroSiniestro = arraySiniestrosA[0].numeroSiniestro;
+          }
+          
           const nuevoNumeroSiniestro = (numeroSiniestro + 1);
     const soli = {
       nombre: solicitante.nombreSolicitante,
@@ -259,6 +265,7 @@ const NuevoSiniestro = (props) => {
     })
     const sini = {
             idSolicitante: dataS,
+            estado: true,
             numeroSiniestro: nuevoNumeroSiniestro,
             idDirRut: ubicacionSiniestro.idDirRut,
             calle: ubicacionSiniestro.calle,
@@ -309,7 +316,7 @@ const NuevoSiniestro = (props) => {
           const arrayAccidentes = dataAccidente.docs.map(doc => ({ id: doc.id, ...doc.data() }))
           var dataAcci = '';
           arrayAccidentes.map(a => {
-            if(a.idSiniestro === sini.id) {
+            if(a.idSiniestro === dataSini) {
               dataAcci = a.id;
             }
           })
@@ -349,11 +356,11 @@ const NuevoSiniestro = (props) => {
 
   const handleNext = () => {
     debugger;
-  //   if (!myForm.current.checkValidity()) {
-  //     setError('Por favor ingrese los campos requeridos');
-  //     return;
-  //  }
-  //  setError('');
+    if (!myForm.current.checkValidity()) {
+      setError('Por favor ingrese los campos requeridos');
+      return;
+   }
+   setError('');
    if((activeStep + 1) === steps.length) {
     guardarSiniestro();
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -396,12 +403,12 @@ const NuevoSiniestro = (props) => {
         ))}
       </Stepper>
       <div>
-        {/* <form ref={myForm}>
+        <form ref={myForm}>
       {
               error ? (
                 <Alert severity="error">{error}</Alert>    
             ) : null
-            } */}
+            }
         {activeStep === 0 ? (
           <UbicacionSiniestro {...propsUbicacionSiniestro}/>
         ) : 
@@ -409,10 +416,6 @@ const NuevoSiniestro = (props) => {
           <DatosSolicitantes {...propsSolicitante}/>
           ) : activeStep === 2 ? (
           <DatosParte {...propsParte}/>
-        // ) : activeStep === 3 ? (
-        //   <DatosBomberos {...propsBomberos}
-        //   //  check={checkBomberos()} 
-        //    />
         ) : activeStep === 3 ? (
           <Accidente {...propsAccidente}/>
         ) : activeStep === 4 ? (
@@ -421,10 +424,6 @@ const NuevoSiniestro = (props) => {
           <Vehiculos {...propsVehiculos}/>
           ) : activeStep === 6 ? (
             <PoliciaMed {...propsPoliciaMed}/>
-        // ) : activeStep === 7 ? (
-        //   <HeridosTable />
-        // ) : activeStep === 8 ? (
-        //   <FallecidosTable />
         ) : null}
         
         {activeStep === steps.length ? (
@@ -448,7 +447,7 @@ const NuevoSiniestro = (props) => {
             </div>
           </div>
         )}
-        {/* </form> */}
+        </form>
       </div>
     </div>
     <Footer />

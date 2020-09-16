@@ -134,7 +134,6 @@ const Vehiculos = ({vehiculos, setVehiculos}) => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              required
               id="dominioAcopladoUno"
               name="dominioAcopladoUno"
               label="Dominio Acoplado"
@@ -265,7 +264,6 @@ const Vehiculos = ({vehiculos, setVehiculos}) => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              required
               id="dominioAcopladoDos"
               name="dominioAcopladoDos"
               label="Dominio Acoplado"

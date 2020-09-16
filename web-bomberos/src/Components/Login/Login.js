@@ -92,7 +92,7 @@ const Login = (props) => {
     try {
         await auth.signInWithEmailAndPassword(usuario, pass)  
         
-        if(usuario === 'admin@admin.com') {
+        if(usuario === 'admin1@admin.com') {
           setUsuario('')
           setPass('')
           setError(null)

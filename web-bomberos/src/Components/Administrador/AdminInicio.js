@@ -7,6 +7,7 @@ import usuarios from '../../img/usuarios.png';
 import { Theme, makeStyles, createStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
+import { withRouter } from 'react-router-dom';
 
 const images = [
     {
@@ -106,9 +107,22 @@ const images = [
   }),
 );
 
-const InicioBomberos = () => {
+const InicioBomberos = (props) => {
 
     const classes = useStyles();
+
+    const clickAdmin = (title) => {
+      if(title === "Nuevo Usuario") {
+        props.history.push('/agregarBombero');
+      }
+      else if(title === "Ver Formularios") {
+        props.history.push('/verSiniestros');
+      }
+      else {
+        // props.history.push('/nuevoSiniestro');
+      }
+      
+    }
 
     return (<div>
         <NavBar />
@@ -125,6 +139,7 @@ const InicioBomberos = () => {
                 marginBottom: '20px',
                 marginLeft: '30%',
             }}
+            onClick={() => clickAdmin(image.title)}
           >
             <span
               className={classes.imageSrc}
@@ -153,4 +168,4 @@ const InicioBomberos = () => {
     );
 }
 
-export default InicioBomberos;
+export default withRouter(InicioBomberos);

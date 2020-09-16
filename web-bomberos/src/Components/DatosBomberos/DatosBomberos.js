@@ -1,71 +1,56 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import {db} from '../../firebase';
 import {auth} from '../../firebase';
-import MenuItem from '@material-ui/core/MenuItem';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import {withRouter} from 'react-router-dom';
+import Alert from '@material-ui/lab/Alert';
       
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
-      width: '60%',
+      width: '100%',
       marginLeft: '20%',
       marginRight: '20%',
       marginTop: '30px',
     },
-    // backButton: {
-    //   marginRight: theme.spacing(1),
-    // },
-    // instructions: {
-    //   marginTop: theme.spacing(1),
-    //   marginBottom: theme.spacing(1),
-    // },
-    // formCheckbox: {
-    //   width: '100%',
-    //   maxWidth: 360,
-    //   backgroundColor: theme.palette.background.paper,
-    // },
-    // formControl: {
-    //   margin: theme.spacing(1),
-    //   minWidth: 120,
-    //   maxWidth: 300,
-    // },
+    button: {
+      marginLeft: '80px',
+    },
   }),
 );
 
-const DatosBomberos = ({dBomberos, setDBomberos}, props) => {
+const DatosBomberos = (props) => {
+  debugger;
     const classes = useStyles();
     const [bomberos, setBomberos] = React.useState([]);
     const [vehiculos, setVehiculos] = React.useState([]);
     const [listaBomberos, setListaBomberos] = React.useState([]);
-    var { 
-        cuartelero,
-         bomberoCargo,
-        listadoBomberos,
-        listadoVehiculos } = dBomberos;
+    const [listaVehiculos, setListaVehiculos] = React.useState([]);
+    const [idSiniestro, setIdSiniestro] = React.useState(props.id);
+    const [success, setSuccess] = React.useState(false);
 
-        React.useEffect(() => {
-            obtenerDatos();
-          })
-    
-          const obtenerDatos = async () => {
-            const dataV = await db.collection('vehiculos').get()
-            const arrayDataV = dataV.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-            setVehiculos(arrayDataV);
-            const dataB = await db.collection('bomberos').get()
-            const arrayDataB = dataB.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-            setBomberos(arrayDataB);
-          }
+    React.useEffect(() => {
+      obtenerDatos();
+    }, [])
+
+    const obtenerDatos = async () => {
+      const dataB = await db.collection('bomberos').get()
+      const arrayDataB = dataB.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      setBomberos(arrayDataB); 
+
+      const dataV = await db.collection('vehiculos').get();
+      const arrayDataV = dataV.docs.map(doc => ({ id: doc.id, ...doc.data()}))
+      setVehiculos(arrayDataV);
+    }   
 
 
     const checkBomberos = (value) => {
-      debugger;
       const currentIndex = listaBomberos.indexOf(value);
       const newChecked = [...listaBomberos];
 
@@ -74,43 +59,72 @@ const DatosBomberos = ({dBomberos, setDBomberos}, props) => {
       } else {
         newChecked.splice(currentIndex, 1);
       }
-      listadoBomberos = newChecked;
-      setDBomberos(newChecked);
+      setListaBomberos(newChecked);
     };
 
-    // const checkVehiculos = (value) => () => {
-    //   debugger;
-    //   const listaVehiculos = [];
-    //   const currentIndex = listaVehiculos.indexOf(value);
-    //   const newChecked = [...listaVehiculos];
+    const checkVehiculos = (value) => {
+      debugger;
+      const currentIndex = listaVehiculos.indexOf(value);
+      const newChecked = [...listaVehiculos];
 
-    //   if (currentIndex === -1) {
-    //     newChecked.push(value);
-    //   } else {
-    //     newChecked.splice(currentIndex, 1);
-    //   }
-    //   listadoBomberos = newChecked;
-    //   setDBomberos(newChecked);
-    // };
+      if (currentIndex === -1) {
+        newChecked.push(value);
+      } else {
+        newChecked.splice(currentIndex, 1);
+      }
+      setListaVehiculos(newChecked);
+    };
 
-    
+    const guardarArreglos = async () => {
+      debugger;
+      var listaObjetoBombero = [];
+      listaBomberos.map(item => {
+        const objectBombero = {
+          idBombero: item,
+          idSiniestro: idSiniestro,
+        }
+        listaObjetoBombero.push(objectBombero);
+      })
+      await listaObjetoBombero.map(a => {
+        db.collection('bomberos_siniestro').add(a);
+      })
+      var listaObjetoVehiculo = [];
+      listaVehiculos.map(item => {
+        const objectVehiculo = {
+          idVehiculo: item,
+          idSiniestro: idSiniestro,
+        }
+        listaObjetoVehiculo.push(objectVehiculo);
+      })
+      await listaObjetoVehiculo.map(v => {
+        db.collection('vehiculos_siniestro').add(v);
+      })
+      setSuccess(true);
+    }
       
         
     return (
         <div>
+          {
+            success === true ? (
+              <Alert severity="success">Se ha Guardado con éxito. Refresque el navegador para verlo.</Alert>
+            ) : null
+          }
           <List dense className={classes.root}>
           <h3>Listado de Bomberos</h3>
               {bomberos.map((bombero) => {
                 // const labelId = `checkbox-list-secondary-label-${value}`;
                 return (
                   <ListItem key={bombero.id} button>
-                    <ListItemText id={bombero.id} primary={bombero.nombre} />
+                    <ListItemText id={bombero.id}
+                    //  primary={bombero.nombre, bombero.apellido} />
+                    >{bombero.nombre} {bombero.apellido}</ListItemText>
                     <ListItemSecondaryAction>
                       <Checkbox
                         value={bombero.id}
                         name="listadoBomberos"
                         edge="end"
-                        onChange={setDBomberos}
+                        onChange={() => checkBomberos(bombero.id)}
                         // onClick={() => checkBomberos(bombero.id)}
                         // inputProps={{ 'aria-labelledby': labelId }}
                       />
@@ -125,11 +139,13 @@ const DatosBomberos = ({dBomberos, setDBomberos}, props) => {
                 // const labelId = `checkbox-list-secondary-label-${value}`;
                 return (
                   <ListItem key={vehiculo.id} button>
-                    <ListItemText id={vehiculo.id} primary={vehiculo.tipo} />
+                    <ListItemText id={vehiculo.id} primary={vehiculo.tipo, vehiculo.patente} />
                     <ListItemSecondaryAction>
                       <Checkbox
+                      value={vehiculo.id}
+                      name="listadoVehiculos"
                         edge="end"
-                        // onChange={() => checkVehiculos(vehiculo.id)}
+                        onChange={() => checkVehiculos(vehiculo.id)}
                         // checked={checked.indexOf(vehiculo.id) !== -1}
                         // inputProps={{ 'aria-labelledby': labelId }}
                       />
@@ -138,8 +154,11 @@ const DatosBomberos = ({dBomberos, setDBomberos}, props) => {
                 );
               })}
             </List>
+            <Button variant="contained" color="primary" className={classes.button} onClick={() => guardarArreglos()}>
+              Guardar
+            </Button>
           </div>
     )
 }
 
-export default DatosBomberos
+export default withRouter(DatosBomberos)

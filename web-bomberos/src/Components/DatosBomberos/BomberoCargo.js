@@ -61,42 +61,6 @@ const BomberoCargo = ({bombero, setBombero}) => {
           ))}
           </TextField>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              select
-              id="idCuartelero"
-              name="idCuartelero"
-              label="Cuartelero"
-              fullWidth
-              onChange={setBombero}
-              value={idCuartelero}
-            >
-              {bomberos.map((item) => (
-            <MenuItem key={item.id} value={item.id}>
-              {item.nombre} {item.apellido}
-            </MenuItem>
-          ))}
-          </TextField>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              select
-              id="idBomberoCargo"
-              name="idBomberoCargo"
-              label="Bombero a Cargo"
-              fullWidth
-              onChange={setBombero}
-              value={idBomberoCargo}
-            >
-              {bomberos.map((item) => (
-            <MenuItem key={item.id} value={item.id}>
-              {item.nombre} {item.apellido}
-            </MenuItem>
-          ))}
-          </TextField>
-          </Grid>
           </Grid>
         </div>
     )

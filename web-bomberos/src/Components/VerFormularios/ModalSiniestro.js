@@ -19,6 +19,19 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import moment from 'react-moment';
 import 'moment/locale/es';
+import DatosBomberos from '../DatosBomberos/DatosBomberos';
+import ServiciosPublicos from '../ServiciosPublicos/ServiciosPublicos';
+import CivilesAccidente from '../CivilesAccidente/CivilesAccidente';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import { Grid } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,22 +48,21 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  rootCard: {
+    minWidth: 275,
+    height: "100%",
+  },
+  title: {
+    fontSize: 14,
+  },
+  instructions: {
+    marginLeft: "10px",
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
 }));
 
- 
 
-function getSteps() {
-    return ['Ubicación del Siniestro',
-     'Datos Solicitante',
-      'Datos Del Parte',
-        'Accidente',
-        'Bombero',
-    'Vehículos',
-  'Móvil Policial'];
-  }
-  
-
-  
 
 const ModalSiniestro = (props) => {
   const classes = useStyles();
@@ -59,8 +71,7 @@ const ModalSiniestro = (props) => {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  const steps = getSteps();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const idAccidente = [];
   const idSiniestro = props.location.state.detail.id;
   const idDirRut = props.location.state.detail.idDirRut;
   const idSolicitante = props.location.state.detail.idSolicitante;
@@ -82,7 +93,6 @@ const ModalSiniestro = (props) => {
   const [solicitante, setSolicitante] = React.useState([]);
   // const [tipoZona, setTipoZona] = React.useState([]);
   const [accidente, setAccidente] = React.useState([]);
-  
   const [bomberoCargo, setBomberoCargo] = React.useState([]);
   const [cuartelero, setCuartelero] = React.useState([]);
   //siniestro
@@ -115,6 +125,47 @@ const ModalSiniestro = (props) => {
     const [autoevacuados, setAutoevacuados] = React.useState([]);
     const [desaparecidos, setDesaparecidos] = React.useState([]);
     // vehiculos
+    const [tipoVehiculoUno, setTipoVehiculoUno] = React.useState('');
+    const [nombreConductorUno, setNombreConductorUno] = React.useState([]);
+    const [apellidoConductorUno, setApellidoConductorUno] = React.useState([]);
+    const [dniConductorUno, setDniConductorUno] = React.useState([]);
+    const [domicilioConductorUno, setDomicilioConductorUno] = React.useState([]);
+    const [marcaUno, setMarcaUno] = React.useState([]);
+    const [dominioUno, setDominioUno] = React.useState([]);
+    const [dominioAcopladoUno, setDominioAcopladoUno] = React.useState([]);
+    const [seguroUno, setSeguroUno] = React.useState([]);
+    const [reconocimientoUno, setReconocimientoUno] = React.useState([]);
+    const [disposicionUno, setDisposicionUno] = React.useState([]);
+    const [tipoVehiculoDos, setTipoVehiculoDos] = React.useState('');
+    const [nombreConductorDos, setNombreConductorDos] = React.useState([]);
+    const [apellidoConductorDos, setApellidoConductorDos] = React.useState([]);
+    const [dniConductorDos, setDniConductorDos] = React.useState([]);
+    const [domicilioConductorDos, setDomicilioConductorDos] = React.useState([]);
+    const [marcaDos, setMarcaDos] = React.useState([]);
+    const [dominioDos, setDominioDos] = React.useState([]);
+    const [dominioAcopladoDos, setDominioAcopladoDos] = React.useState([]);
+    const [seguroDos, setSeguroDos] = React.useState([]);
+    const [reconocimientoDos, setReconocimientoDos] = React.useState([]);
+    const [disposicionDos, setDisposicionDos] = React.useState([]);
+    //bomberos
+    var arrayBSini = [];
+    var arrayVSini = [];
+    var bomberosMostrar = [];
+    var vehiculosMostrar = [];
+    const [bomberosSiniestro, setBomberosSiniestro] = React.useState([]); 
+    const [vehiculosSiniestro, setVehiculosSiniestro] = React.useState([]); 
+    const [existe, setExiste] = React.useState(true);
+    const [existeVehi, setExisteVehi] = React.useState(true);
+    // servicios publicos
+    const [existeSP, setExisteSP] = React.useState(true);
+    const [spa, setSpa] = React.useState([]); 
+    var spMostrar = [];
+    var arraySPa = [];
+    // Heridos y Fallecidos
+    const [existeHA, setExisteHA] = React.useState(true);
+    const [herFall, setHerFall] = React.useState([]);
+    var haMostrar = [];
+    var arrayHA = [];
 
   var arrayDataS = {};
   // var idDirRut = '';
@@ -156,7 +207,7 @@ const ModalSiniestro = (props) => {
     const arrayDataSoli = dataSoli.data();
     setNombreSolicitante(arrayDataSoli.nombre);
     setApellidoSolicitante(arrayDataSoli.apellido);
-    setTelefonoSolicitante(arrayDataSoli.nombre);
+    setTelefonoSolicitante(arrayDataSoli.telefono);
     setDniSolicitante(arrayDataSoli.dni);
     var adsoli = [];
     adsoli.push(arrayDataSoli);
@@ -172,30 +223,67 @@ const ModalSiniestro = (props) => {
   }
 
   const obtenerDatosAccidente = async () => {
-    debugger;
     const dataA = await db.collection('accidentes').get();
-    debugger;
+
     const arrayDataA = dataA.docs.map(doc => ({ id: doc.id, ...doc.data()}))
     const acci = [];
     arrayDataA.map(item => {
         if(item.idSiniestro === idSiniestro) {
-          debugger;
             acci.push(item);
         }
     })
+    debugger;
+    idAccidente.push(acci[0].id);
     setSuperficieAfectada(acci[0].superficieAfectada);
     setSuperficieEvacuada(acci[0].superficieEvacuada);
     setEvacuados(acci[0].evacuados);
     setAutoevacuados(acci[0].autoEvacuados);
     setDesaparecidos(acci[0].desaparecidos);
-    debugger;
-    // setAccidente(acci);
-    // setAccidente(accidente);
-    const dataTA = await db.collection('tipoAccidente').doc(acci[0].idTipoAccidente).get()
-    const arrayDataTA = dataTA.data();
-    debugger;
-    // adta.push(arrayDataTA);
-    setTipoAccidente(arrayDataTA.nombre);
+
+    const dataVA = await db.collection('vehiculos_accidente').get();
+    const arrayDataVA = dataVA.docs.map(doc => ({ id: doc.id, ...doc.data()}))
+    var vehi = [];
+    arrayDataVA.map(a => {
+      if(a.idAccidente === acci[0].id) {
+        vehi.push(a)
+      }
+    })
+    if(vehi.length > 0) {
+      const dataTVU = await db.collection('tipo_Vehiculo').doc(vehi[0].idTipoVehiculo).get();
+      const arrayDataTVU = dataTVU.data();
+      setTipoVehiculoUno(arrayDataTVU.nombre);
+      const dataTVD = await db.collection('tipo_Vehiculo').doc(vehi[0].idTipoVehiculoDos).get();
+      const arrayDataTVD = dataTVD.data();
+      debugger;
+      setTipoVehiculoDos(arrayDataTVD.nombre);
+      setNombreConductorUno(vehi[0].nombreConductorUno);
+      setApellidoConductorUno(vehi[0].apellidoConductorUno);
+      setDniConductorUno(vehi[0].dniConductorUno);
+      setDomicilioConductorUno(vehi[0].domicilioConductorUno);
+      setMarcaUno(vehi[0].vehiculoMarcaUno);
+      setDominioUno(vehi[0].dominioUno);
+      setDominioAcopladoUno(vehi[0].dominioAcopladoUno);
+      setSeguroUno(vehi[0].segurosUno);
+      setReconocimientoUno(vehi[0].reconocimientoUno);
+      setDisposicionUno(vehi[0].disposicionUno);
+      setNombreConductorDos(vehi[0].nombreConductorDos);
+      setApellidoConductorDos(vehi[0].apellidoConductorDos);
+      setDniConductorDos(vehi[0].dniConductorDos);
+      setDomicilioConductorDos(vehi[0].domicilioConductorDos);
+      setMarcaDos(vehi[0].vehiculoMarcaDos);
+      setDominioDos(vehi[0].dominioDos);
+      setDominioAcopladoDos(vehi[0].dominioAcopladoDos);
+      setSeguroDos(vehi[0].segurosDos);
+      setReconocimientoDos(vehi[0].reconocimientoDos);
+      setDisposicionDos(vehi[0].disposicionDos);
+      // setAccidente(acci);
+      // setAccidente(accidente);
+      const dataTA = await db.collection('tipoAccidente').doc(acci[0].idTipoAccidente).get()
+      const arrayDataTA = dataTA.data();
+      // adta.push(arrayDataTA);
+      setTipoAccidente(arrayDataTA.nombre);
+    }
+    
     // setTipoAccidente(arrayDataTA);
     const dataB = await db.collection('bomberos').doc(acci[0].idBomberoCargo).get()
     const arrayDataB = dataB.data();
@@ -209,12 +297,106 @@ const ModalSiniestro = (props) => {
     adc.push(arrayDataC);
     setCuartelero(adc);
     // setCuartelero(arrayDataC);
+    const dataBS = await db.collection('bomberos_siniestro').get();
+    const arrayDataBS = dataBS.docs.map(doc => ({ id: doc.id, ...doc.data()}))
+    const datavS = await db.collection('vehiculos_siniestro').get();
+    const arrayDatavS = datavS.docs.map(doc => ({ id: doc.id, ...doc.data()}))
+    if(arrayDataBS.length === 0) {
+      setExiste(false);
+    }
+    if(arrayDatavS.length === 0) {
+      setExiste(false);
+    }
+    
+    arrayDataBS.map(a => {
+      if(a.idSiniestro === idSiniestro) {
+        setExiste(true)
+        arrayBSini.push(a)
+      }
+    })
+    arrayDatavS.map(a => {
+      if(a.idSiniestro === idSiniestro) {
+        setExisteVehi(true)
+        arrayVSini.push(a)
+      }
+    })
+    if(arrayBSini.length === 0 || arrayVSini.length === 0) {
+      setExiste(false);
+      setExisteVehi(false);
+    } else {
+      for(var i = 0; i < arrayBSini.length; i++){
+        const dataBom = await db.collection('bomberos').doc(arrayBSini[i].idBombero).get()
+        const arrayDataBom = dataBom.data();
+        bomberosMostrar.push(arrayDataBom);
+      }        
+      for(var i = 0; i < arrayVSini.length; i++){
+        const dataVeh = await db.collection('vehiculos').doc(arrayVSini[i].idVehiculo).get()
+        const arrayDataVeh = dataVeh.data();
+        vehiculosMostrar.push(arrayDataVeh);
+      }  
+      }
+    setBomberosSiniestro(bomberosMostrar);
+    setVehiculosSiniestro(vehiculosMostrar);
+      debugger;
+    const dataSPa = await db.collection('serviciosPublicos_accidente').get();
+    const arrayDataSPa = dataSPa.docs.map(doc => ({ id: doc.id, ...doc.data()}))
+    if(arrayDataSPa.length === 0) {
+      setExisteSP(false);
+    }
+    arrayDataSPa.map(a => {
+      if(a.idAccidente === idAccidente[0]) {
+        setExisteSP(true)
+        arraySPa.push(a)
+      }
+    })
+
+    if(arraySPa.length === 0) {
+      setExisteSP(false);
+    } else {
+      for(var i = 0; i < arraySPa.length; i++){
+        debugger;
+        const datasv = await db.collection('serviciosPublicos').doc(arraySPa[i].idServicioPublico).get()
+        const arrayDatasv = datasv.data();
+        spMostrar.push(arrayDatasv);
+      }        
+      }
+    setSpa(spMostrar);
+      debugger;
+    const dataHA = await db.collection('civiles_accidente').get();
+    const arrayDataHA = dataHA.docs.map(doc => ({ id: doc.id, ...doc.data()}))
+    if(arrayDataHA.length === 0) {
+      debugger;
+      setExisteHA(false);
+    } else {
+      arrayDataHA.map(a => {
+        if(a.idAccidente === idAccidente[0]) {
+          debugger;
+          setExisteSP(true)
+          arrayHA.push(a)
+        }
+      })
+    }
+    
+    debugger;
+    setHerFall(arrayHA);
+    
   }
+
 
 
     return (
       <div>
         <NavBar />
+        <div className={classes.instructions}>
+            <Breadcrumbs aria-label="breadcrumb">
+              <Link color="inherit" href="/inicio-bomberos" 
+              // onClick={handleClick}
+              >
+                Inicio-Bomberos
+              </Link>
+              <Typography color="textPrimary">Nuevo Siniestro</Typography>
+            </Breadcrumbs>
+          </div>
       <div className={classes.root}>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary
@@ -226,20 +408,25 @@ const ModalSiniestro = (props) => {
         </AccordionSummary>
 
         <AccordionDetails>
+        <Grid container spacing={3}>
+        <Grid item xs={12}>
           <Typography>
-            Número Parte:{nroParte} - Hora Llamado: {horaLlamado} - Hora Salida: {horaToque} <br/>
+          
+            Número Parte:{nroParte} - Hora Llamado: {horaLlamado} - Hora Toque: {horaToque} <br/>
             Fecha y Hora de Salida: {fechaHoraSalida} - Fecha y Hora de Llegada: {fechaHoraLlegada}
             <hr />
             {
               dirRut === "Ruta" ? (
                 dirRut + " " + nombreRuta + " - KM " + km
               ) : (
-                dirRut + calle + nroCalle + "Entre: " + calleUno + " " + calleDos
+                dirRut + " " + calle + " " + nroCalle + "Entre: " + calleUno + " " + calleDos
               )
             } <br />
            Zona: {tipoZona} - Servicio: {tipoServicio}
-            
-          </Typography>
+           </Typography>
+          </Grid>
+          
+          </Grid>
         </AccordionDetails>
       </Accordion>
       <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
@@ -277,14 +464,198 @@ const ModalSiniestro = (props) => {
           aria-controls="panel4bh-content"
           id="panel4bh-header"
         >
-          <Typography className={classes.heading}>Personal data</Typography>
+          <Typography className={classes.heading}>Vehículos del Accidente</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Vehículo 1: 
-          </Typography>
+        <Grid container spacing={3}>
+              <Grid item xs={6}>
+            <Card className={classes.rootCard}>
+            <CardContent>
+              <Typography className={classes.title} gutterBottom>
+              Vehículo 1 <hr />
+              {tipoVehiculoUno} {marcaUno} - Dominio: {dominioUno} {dominioAcopladoUno} - Seguro: {seguroUno} - Reconocimiento: {reconocimientoUno} Disposición: - {disposicionUno}
+              <br/>
+            Conductor: {apellidoConductorUno} {nombreConductorUno} - DNI: {dniConductorUno} - Domicilio: {domicilioConductorUno} <br />
+              </Typography>
+               
+
+
+            </CardContent>
+          </Card>
+          </Grid>
+          <Grid item xs={6} >     
+          <Card className={classes.rootCard}>
+          <CardContent>
+            <Typography className={classes.title} gutterBottom>
+              Vehículo 2
+              <hr/> {tipoVehiculoDos} {marcaDos} Dominio: {dominioDos} {dominioAcopladoDos} Seguro: {seguroDos} Reconocimiento: {reconocimientoDos} {disposicionDos}
+            <br/>
+            Conductor: {apellidoConductorDos} {nombreConductorDos} - DNI: {dniConductorDos} - Domicilio: {domicilioConductorDos}
+            </Typography>
+
+          </CardContent>
+        </Card>
+        </Grid>
+        </Grid>
+          
         </AccordionDetails>
       </Accordion>
+      <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel4bh-content"
+          id="panel4bh-header"
+        >
+          <Typography className={classes.heading}>Bomberos y Vehículos que Participaron del Siniestro</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {existe === true ? (
+              <Grid container spacing={3}>
+              <Grid item xs={6}>
+            <Card className={classes.rootCard}>
+            <CardContent>
+              <Typography className={classes.title} color="textSecondary" gutterBottom>
+                Bomberos
+              </Typography>
+                {
+                  bomberosSiniestro.map(a => {
+                    return (
+                    <Typography variant="body2" component="p">
+                      {a.nombre} {a.apellido} Legajo: {a.legajo} <br/>
+                    </Typography>
+                    )
+                  })
+                }
+
+
+            </CardContent>
+          </Card>
+          </Grid>
+          <Grid item xs={6} >     
+          <Card className={classes.rootCard}>
+          <CardContent>
+            <Typography className={classes.title} color="textSecondary" gutterBottom>
+              Vehículos
+            </Typography>
+              {
+                vehiculosSiniestro.map(a => {
+                  return (
+                  <Typography variant="body2" component="p">
+                    {a.tipo} {a.patente} <br/>
+                  </Typography>
+                  )
+                })
+              }
+
+
+          </CardContent>
+        </Card>
+        </Grid>
+        </Grid>
+          ) : (<DatosBomberos id={idSiniestro}/>)}
+          <br />
+          {/* {
+            existeVehi === true ? (
+              vehiculosSiniestro.map(v => {
+                return (
+                  
+                  <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Typography>
+                  {v.tipo} {v.patente} 
+                  <br />
+                   </Typography>
+                   </Grid>
+                   
+                 </Grid>
+                 
+                   )
+              })
+            ) : null
+          } */}
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel6'} onChange={handleChange('panel6')}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel4bh-content"
+          id="panel4bh-header"
+        >
+          <Typography className={classes.heading}>Servicios Publicos</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+        
+          {existeSP === true ? (
+             
+                <Grid container spacing={3}>
+              <Grid item xs={6}>
+              <Card className={classes.rootCard}>
+          <CardContent>
+            {/* <Typography className={classes.title} color="textSecondary" gutterBottom>
+              Vehículos
+            </Typography> */}
+              {
+                spa.map(s => {
+                  return (
+                  <Typography variant="body2" component="p">
+                    {s.nombre} <br/>
+                  </Typography>
+                  )
+                })
+              }
+
+
+          </CardContent>
+        </Card>
+                 </Grid>
+                 </Grid>
+          ) : (<ServiciosPublicos idSini={idSiniestro}/>)}
+          
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel7'} onChange={handleChange('panel7')}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel4bh-content"
+          id="panel4bh-header"
+        >
+          <Typography className={classes.heading}>Heridos y Fallecidos</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+
+        {existeHA === true ? (
+                <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Nombre</TableCell>
+            <TableCell >Apellido</TableCell>
+            <TableCell >Dni</TableCell>
+            <TableCell >Nacionalidad</TableCell>
+            <TableCell >Sexo</TableCell>
+            <TableCell >Fallecido</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {herFall.map((c) => (
+            <TableRow key={c.dni}>
+              <TableCell> {c.nombre} </TableCell>
+              <TableCell> {c.apellido} </TableCell>
+              <TableCell> {c.dni} </TableCell>
+              <TableCell> {c.nacionalidad} </TableCell>
+              <TableCell> {c.sexo} </TableCell>
+              <TableCell> {c.fallecido} </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+        
+          ) : (<CivilesAccidente idSini={idSiniestro}/>)}
+                        
+        </AccordionDetails>
+      </Accordion>
+      
       </div>
       <Footer />
       </div>

@@ -81,7 +81,8 @@ const VerFormularios = (props) => {
       debugger;
     const dataS = await db.collection('siniestros').orderBy('numeroSiniestro', 'desc').get()
     const arrayDataS = dataS.docs.map(doc => ({ id: doc.id, ...doc.data()}))
-    setSiniestros(arrayDataS);
+    const siniestrosFiltrado = arrayDataS.filter(doc => doc.estado === true)
+    setSiniestros(siniestrosFiltrado);
   }
 
   const abrirModal = (siniestro) => {
@@ -92,6 +93,33 @@ const VerFormularios = (props) => {
       });
     }
   
+    const eliminarSiniestro = async (siniestro) => {
+        debugger;
+        // const request = {nuevoSocio};
+        await db.collection('siniestros').doc(siniestro.id).update({
+            idSolicitante: siniestro.idSolicitante,
+            estado: false,
+            numeroSiniestro: siniestro.numeroSiniestro,
+            idDirRut: siniestro.idDirRut,
+            calle: siniestro.calle,
+            nroCalle: siniestro.nroCalle,
+            calleUno: siniestro.calleUno,
+            calleDos: siniestro.calleDos,
+            pisoNro: siniestro.pisoNro,
+            depto: siniestro.depto,
+            nombreRuta: siniestro.nombreRuta,
+            km: siniestro.km,
+            idTipoZona: siniestro.idTipoZona,
+            tipoServicio: siniestro.tipoServicio,
+            nroParte: siniestro.nroParte,
+            horaLlamado: siniestro.horaLlamado,
+            horaToque: siniestro.horaToque,
+            fechaHoraSalida: siniestro.fechaHoraSalida,
+            fechaHoraLlegada: siniestro.fechaHoraLlegada,
+        });
+
+        obtenerDatos();
+      }
 
   
     return (
@@ -114,39 +142,35 @@ const VerFormularios = (props) => {
                 columns={state.columns}
                 data={siniestros}
                 editable={{
-                    onRowAdd: (newData) =>
-                    new Promise((resolve) => {
-                        setTimeout(() => {
-                        resolve();
-                        setState((prevState) => {
-                            const data = [...prevState.data];
-                            data.push(newData);
-                            return { ...prevState, data };
-                        });
-                        }, 600);
-                    }),
-                    onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve) => {
-                        setTimeout(() => {
-                        resolve();
-                        if (oldData) {
-                            setState((prevState) => {
-                            const data = [...prevState.data];
-                            data[data.indexOf(oldData)] = newData;
-                            return { ...prevState, data };
-                            });
-                        }
-                        }, 600);
-                    }),
+                    // onRowAdd: (newData) =>
+                    // new Promise((resolve) => {
+                    //     setTimeout(() => {
+                    //     resolve();
+                    //     setState((prevState) => {
+                    //         const data = [...prevState.data];
+                    //         data.push(newData);
+                    //         return { ...prevState, data };
+                    //     });
+                    //     }, 600);
+                    // }),
+                    // onRowUpdate: (newData, oldData) =>
+                    // new Promise((resolve) => {
+                    //     setTimeout(() => {
+                    //     resolve();
+                    //     if (oldData) {
+                    //         setState((prevState) => {
+                    //         const data = [...prevState.data];
+                    //         data[data.indexOf(oldData)] = newData;
+                    //         return { ...prevState, data };
+                    //         });
+                    //     }
+                    //     }, 600);
+                    // }),
                     onRowDelete: (oldData) =>
                     new Promise((resolve) => {
                         setTimeout(() => {
                         resolve();
-                        setState((prevState) => {
-                            const data = [...prevState.data];
-                            data.splice(data.indexOf(oldData), 1);
-                            return { ...prevState, data };
-                        });
+                          eliminarSiniestro(oldData)
                         }, 600);
                     }),
                 }}
