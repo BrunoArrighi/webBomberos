@@ -8,8 +8,10 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withRouter } from 'react-router-dom';
 import {auth} from '../../firebase';
+import {db} from '../../firebase';
 
 const useStyles = makeStyles((theme) =>
+
   createStyles({
     root: {
       flexGrow: 1,
@@ -25,9 +27,29 @@ const useStyles = makeStyles((theme) =>
 
 const NavBar = (props) => {
   const classes = useStyles();
+  const [firebaseUser, setFirebaseUser] = React.useState(false)
+
+React.useEffect(() => {
+    auth.onAuthStateChanged(user => {
+        console.log(user)
+        if(user){
+            setFirebaseUser(user)
+        }else{
+            setFirebaseUser(null)
+        }
+    })
+}, [])
 
   const iniciarSesion = () => {
     props.history.push('/login');
+  }
+
+  const historia = () => {
+    props.history.push('/historia');
+  }
+
+  const noticias = () => {
+    props.history.push('/');
   }
 
   const cerrarSesion = () => {
@@ -45,16 +67,20 @@ const NavBar = (props) => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Noticias
+              <Button color="inherit" onClick={() => noticias()}>Noticias</Button>
+              <Button color="inherit" onClick={() => historia()}>Historia</Button>
             </Typography>
+            <Typography variant="h6" className={classes.title}>
+              
+            </Typography>
+            
             {
-              props.firebaseUser !== null ? (
+              firebaseUser !== null ? (
                 <Button color="inherit" onClick={() => cerrarSesion()}>Cerrar Sesión</Button>
               ) : (
                 <Button color="inherit" onClick={() => iniciarSesion()}>Iniciar Sesión</Button>
               )
             }
-            
           </Toolbar>
         </AppBar>
       </div>

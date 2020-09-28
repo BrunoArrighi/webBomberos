@@ -10,6 +10,7 @@ import NuevoSiniestro from './Components/InicioBomberos/NuevoSiniestro';
 import VerFormularios from './Components/VerFormularios/VerFormularios';
 import ModalSiniestro from './Components/VerFormularios/ModalSiniestro';
 import RegistrarBombero from './Components/Administrador/RegistrarBombero/RegistrarBombero';
+import Historia from './Components/Historia/Historia';
 
 function App() {
   return (
@@ -39,6 +40,9 @@ function App() {
         </Route>
         <Route path="/agregarBombero" exact>
           <RegistrarBombero />
+        </Route>
+        <Route path="/historia" exact>
+          <Historia />
         </Route>
       </Switch>
     </div>

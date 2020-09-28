@@ -1,18 +1,49 @@
 import React from 'react';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import './Noticias.css';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import NavBar from '../NavBar/NavBar';
 import Footer from '../Footer/Footer';
 import Search from '../Search/Search';
+import Typography from '@material-ui/core/Typography';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    marginTop: '60px',
+    marginLeft: '5%',
+    marginRight: '5%',
+  },
+  
+  instructions: {
+    marginLeft: "10px",
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+  instructionsBreak: {
+    marginLeft: "40px",
+    marginTop: '10px',
+    marginBottom: '10px',
+    marginRight: '40px',
+    borderRadius: '6px',
+    padding: '10px',
+    border: '1px solid black',
+    textAlign: "center",
+  },
+  title: {
+      textAlign: "center",
+      color: "red",
+  },
+}));
 
 const Noticias = () => {
-
+    const classes = useStyles();
     const [noticias, setNoticias] = React.useState([{
         fecha: "11-02-12",
         titulo: "Muerte",
@@ -28,6 +59,15 @@ const Noticias = () => {
     return (
          <React.Fragment>
         <NavBar />
+        <div className={classes.instructionsBreak}>
+            <Breadcrumbs aria-label="breadcrumb">
+                <Link color="inherit" href="/" 
+                // onClick={handleClick}
+                >
+                    Noticias
+                </Link>
+            </Breadcrumbs>
+            </div>
       <CssBaseline />
       <Search />
       <Container maxWidth="sm">
