@@ -71,6 +71,15 @@ const useStyles = makeStyles((theme) =>
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
+    instructionsBreak: {
+      marginLeft: "40px",
+      marginTop: '10px',
+      marginBottom: '10px',
+      marginRight: '40px',
+      borderRadius: '6px',
+      padding: '10px',
+      border: '1px solid black',
+    },
     formCheckbox: {
       width: '100%',
       maxWidth: 360,
@@ -197,24 +206,36 @@ const NuevoSiniestro = (props) => {
   const propsVehiculos = {vehiculos, setVehiculos};
   const propsPoliciaMed = {policiaMed, setPoliciaMed};
 
-  React.useEffect(() => {
+  const [user, setUser] = React.useState(null)
 
-    if(auth.currentUser) {
-      const obtenerDatos = async () => {
-        debugger;
-        try {
-          // const db = firebase.firestore()
-        } catch (error) {
-          console.log(error)
+    React.useEffect(() => {
+        if(auth.currentUser){
+            console.log('existe')
+            setUser(auth.currentUser)
+        }else{
+            console.log('no existe')
+            props.history.push('/login')
         }
+    }, [props.history])
+
+  // React.useEffect(() => {
+
+  //   if(auth.currentUser) {
+  //     const obtenerDatos = async () => {
+  //       debugger;
+  //       try {
+  //         // const db = firebase.firestore()
+  //       } catch (error) {
+  //         console.log(error)
+  //       }
   
-      }
+  //     }
   
-      obtenerDatos()
-    } else {
-      props.history.push('/login')
-    }
-  }, [props.history])
+  //     obtenerDatos()
+  //   } else {
+  //     props.history.push('/login')
+  //   }
+  // }, [props.history])
 // }, [])
 
 
@@ -384,7 +405,7 @@ const NuevoSiniestro = (props) => {
   return (
       <div>
           <NavBar />
-          <div className={classes.instructions}>
+          <div className={classes.instructionsBreak}>
             <Breadcrumbs aria-label="breadcrumb">
               <Link color="inherit" href="/inicio-bomberos" 
               // onClick={handleClick}

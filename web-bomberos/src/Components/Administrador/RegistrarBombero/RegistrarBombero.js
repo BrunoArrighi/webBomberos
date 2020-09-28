@@ -8,11 +8,14 @@ import NavBar from '../../NavBar/NavBar';
 import Footer from '../../Footer/Footer';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
 // import { auth } from 'firebase';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      marginTop: '30px',
+      marginTop: '60px',
       marginLeft: '5%',
       marginRight: '5%',
     },
@@ -21,6 +24,15 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: "10px",
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
+    },
+    instructionsBreak: {
+      marginLeft: "40px",
+      marginTop: '10px',
+      marginBottom: '10px',
+      marginRight: '40px',
+      borderRadius: '6px',
+      padding: '10px',
+      border: '1px solid black',
     },
   }));
 
@@ -75,8 +87,17 @@ const RegistrarBombero = (props) => {
     return (
         <div>
             <NavBar />
+            <div className={classes.instructionsBreak}>
+            <Breadcrumbs aria-label="breadcrumb">
+                <Link color="inherit" href="/admin-inicio" 
+                // onClick={handleClick}
+                >
+                    Inicio-Admin
+                </Link>
+                <Typography color="textPrimary">Registrar Bombero</Typography>
+            </Breadcrumbs>
+            </div>
             <div className={classes.root}>
-                <h1>NUEVO BOMBERO</h1>
         <Grid container spacing={3} >
             <Grid item xs={12} sm={6}>
             <TextField

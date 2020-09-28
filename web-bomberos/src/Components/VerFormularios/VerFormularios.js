@@ -9,7 +9,7 @@ import Link from '@material-ui/core/Link';
 import Footer from '../Footer/Footer';
 import MaterialTable from 'material-table';
 import { forwardRef } from 'react';
-
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -51,6 +51,24 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
   };
 
+  const useStyles = makeStyles((theme) =>
+  createStyles({
+    instructionsBreak: {
+      marginLeft: "40px",
+      marginTop: '10px',
+      marginBottom: '10px',
+      marginRight: '40px',
+      borderRadius: '6px',
+      padding: '10px',
+      border: '1px solid black',
+    },
+    table: {
+      marginLeft: '50px',
+      marginRight: '50px',
+    },
+  }),
+);
+
 
 const VerFormularios = (props) => {
     const [state, setState] = React.useState({
@@ -71,11 +89,21 @@ const VerFormularios = (props) => {
         // ],
       });
   const [siniestros, setSiniestros] = React.useState([]);
+  const classes = useStyles();
 
+  const [user, setUser] = React.useState(null)
 
-  React.useEffect(() => {
-    obtenerDatos();
-  }, [])
+    React.useEffect(() => {
+        if(auth.currentUser){
+            console.log('existe')
+            setUser(auth.currentUser)
+            obtenerDatos();
+        }else{
+            console.log('no existe')
+            props.history.push('/login')
+        }
+    }, [props.history])
+
 
   const obtenerDatos = async () => {
       debugger;
@@ -125,7 +153,7 @@ const VerFormularios = (props) => {
     return (
         <div>
             <NavBar />
-            <div>
+            <div className={classes.instructionsBreak}>
             <Breadcrumbs aria-label="breadcrumb">
                 <Link color="inherit" href="/inicio-bomberos" 
                 // onClick={handleClick}
@@ -135,6 +163,7 @@ const VerFormularios = (props) => {
                 <Typography color="textPrimary">Ver Siniestros</Typography>
             </Breadcrumbs>
             </div>
+            <div className={classes.table}>
             <MaterialTable
                 onRowClick={(event, newData) => abrirModal(newData)}
                 icons={tableIcons}
@@ -175,7 +204,9 @@ const VerFormularios = (props) => {
                     }),
                 }}
                 />
+                </div>
             <Footer />
+
         </div>
     )
 }

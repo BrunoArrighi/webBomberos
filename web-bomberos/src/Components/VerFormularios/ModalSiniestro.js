@@ -12,6 +12,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import {db} from '../../firebase';
+import {auth} from '../../firebase';
 import { useForm, useStep } from "react-hooks-helper";
 import NavBar from '../NavBar/NavBar';
 import Footer from '../Footer/Footer';
@@ -170,10 +171,19 @@ const ModalSiniestro = (props) => {
   var arrayDataS = {};
   // var idDirRut = '';
   // var idTipoZona = '';
+  const [user, setUser] = React.useState(null)
 
-  React.useEffect(() => {
-    obtenerDatos();
-  }, [])
+    React.useEffect(() => {
+        if(auth.currentUser){
+            console.log('existe')
+            setUser(auth.currentUser)
+            obtenerDatos();
+        }else{
+            console.log('no existe')
+            props.history.push('/login')
+        }
+    }, [props.history])
+
   
 
   const obtenerDatos = async () => {

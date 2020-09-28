@@ -1,13 +1,30 @@
 import React from 'react';
 import './Footer.css';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    root: {
+      position: 'static',
+      marginTop: '50px',
+      left: '0px',
+      bottom: '0px',
+      width: '100%',
+      backgroundColor: 'gray',
+      color: 'white',
+      textAlign: 'center',
+      padding: '40px',
+      textAlign: 'center',
+    },
+  }),
+);
 
 const Footer = () => {
-    return (<footer className="sm-padding bg-gray">
-    <div className="footer">
+  const classes = useStyles();
+    return (
+      <div className={classes.root}>
       <p> Desarrollado por Sebastián Ulloa y Bruno Arrighi</p>
-    </div>
-    </footer>)
+    </div>)
 }
 
 export default Footer;

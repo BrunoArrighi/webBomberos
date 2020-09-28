@@ -1,4 +1,6 @@
 import React from 'react';
+import {db} from '../../firebase';
+import {auth} from '../../firebase';
 import NavBar from '../NavBar/NavBar';
 import Footer from '../Footer/Footer';
 import nuevoFormulario from '../../img/NuevoFormulario.jpg';
@@ -101,6 +103,18 @@ const images = [
 const InicioBomberos = (props) => {
 
     const classes = useStyles();
+    // const [user, setUser] = React.useState(null)
+
+    // React.useEffect(() => {
+    //   debugger;
+    //     if(auth.currentUser){
+    //         console.log('existe')
+    //         setUser(auth.currentUser)
+    //     }else{
+    //         console.log('no existe')
+    //         props.history.push('/login')
+    //     }
+    // }, [props.history])
 
     const clickSiniestros = (title) => {
       if(title === "Nuevo Formulario") {
