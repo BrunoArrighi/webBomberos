@@ -93,7 +93,7 @@ const Accidente = ({accidente, setAccidente}) => {
           ))}
           </TextField>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          {/* <Grid item xs={12} sm={6}>
             <TextField
               required
               select
@@ -110,7 +110,7 @@ const Accidente = ({accidente, setAccidente}) => {
             </MenuItem>
           ))}
           </TextField>
-          </Grid>
+          </Grid> */}
           
           <Grid item xs={12} sm={6}>
             <TextField

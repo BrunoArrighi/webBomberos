@@ -61,6 +61,15 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
+  instructionsBreak: {
+    marginLeft: "40px",
+    marginTop: '10px',
+    marginBottom: '10px',
+    marginRight: '40px',
+    borderRadius: '6px',
+    padding: '10px',
+    border: '1px solid black',
+  },
 }));
 
 
@@ -163,7 +172,7 @@ const ModalSiniestro = (props) => {
     var spMostrar = [];
     var arraySPa = [];
     // Heridos y Fallecidos
-    const [existeHA, setExisteHA] = React.useState(true);
+    const [existeHA, setExisteHA] = React.useState(false);
     const [herFall, setHerFall] = React.useState([]);
     var haMostrar = [];
     var arrayHA = [];
@@ -381,7 +390,7 @@ const ModalSiniestro = (props) => {
       arrayDataHA.map(a => {
         if(a.idAccidente === idAccidente[0]) {
           debugger;
-          setExisteSP(true)
+          setExisteHA(true)
           arrayHA.push(a)
         }
       })
@@ -397,7 +406,7 @@ const ModalSiniestro = (props) => {
     return (
       <div>
         <NavBar />
-        <div className={classes.instructions}>
+        <div className={classes.instructionsBreak}>
             <Breadcrumbs aria-label="breadcrumb">
               <Link color="inherit" href="/inicio-bomberos" 
               // onClick={handleClick}
@@ -483,7 +492,7 @@ const ModalSiniestro = (props) => {
             <CardContent>
               <Typography className={classes.title} gutterBottom>
               Vehículo 1 <hr />
-              {tipoVehiculoUno} {marcaUno} - Dominio: {dominioUno} {dominioAcopladoUno} - Seguro: {seguroUno} - Reconocimiento: {reconocimientoUno} Disposición: - {disposicionUno}
+              {tipoVehiculoUno} {marcaUno} - Dominio: {dominioUno} {dominioAcopladoUno} - Seguro: {seguroUno} - Reconocimiento: {reconocimientoUno} Disposición: {disposicionUno}
               <br/>
             Conductor: {apellidoConductorUno} {nombreConductorUno} - DNI: {dniConductorUno} - Domicilio: {domicilioConductorUno} <br />
               </Typography>
@@ -498,7 +507,7 @@ const ModalSiniestro = (props) => {
           <CardContent>
             <Typography className={classes.title} gutterBottom>
               Vehículo 2
-              <hr/> {tipoVehiculoDos} {marcaDos} Dominio: {dominioDos} {dominioAcopladoDos} Seguro: {seguroDos} Reconocimiento: {reconocimientoDos} {disposicionDos}
+              <hr/> {tipoVehiculoDos} {marcaDos} Dominio: {dominioDos} {dominioAcopladoDos} Seguro: {seguroDos} Reconocimiento: {reconocimientoDos} - Disposición: {disposicionDos}
             <br/>
             Conductor: {apellidoConductorDos} {nombreConductorDos} - DNI: {dniConductorDos} - Domicilio: {domicilioConductorDos}
             </Typography>
@@ -564,25 +573,6 @@ const ModalSiniestro = (props) => {
         </Grid>
           ) : (<DatosBomberos id={idSiniestro}/>)}
           <br />
-          {/* {
-            existeVehi === true ? (
-              vehiculosSiniestro.map(v => {
-                return (
-                  
-                  <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Typography>
-                  {v.tipo} {v.patente} 
-                  <br />
-                   </Typography>
-                   </Grid>
-                   
-                 </Grid>
-                 
-                   )
-              })
-            ) : null
-          } */}
         </AccordionDetails>
       </Accordion>
       <Accordion expanded={expanded === 'panel6'} onChange={handleChange('panel6')}>

@@ -12,7 +12,7 @@ import { withRouter } from 'react-router-dom';
 const images = [
     {
       url: `${nuevaNoticia}`,
-      title: 'Cargar Noticia',
+      title: 'Nueva Noticia',
       width: '40%',
       align: 'center',
       backgroundPosition: 'center 60%',
@@ -115,8 +115,11 @@ const InicioBomberos = (props) => {
       if(title === "Nuevo Usuario") {
         props.history.push('/agregarBombero');
       }
-      else if(title === "Ver Formularios") {
-        props.history.push('/verSiniestros');
+      else if(title === "Ver Noticias") {
+        props.history.push('/verNoticias');
+      }
+      else if(title === "Nueva Noticia") {
+        props.history.push('/nuevaNoticia');
       }
       else {
         // props.history.push('/nuevoSiniestro');

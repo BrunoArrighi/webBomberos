@@ -11,6 +11,9 @@ import VerFormularios from './Components/VerFormularios/VerFormularios';
 import ModalSiniestro from './Components/VerFormularios/ModalSiniestro';
 import RegistrarBombero from './Components/Administrador/RegistrarBombero/RegistrarBombero';
 import Historia from './Components/Historia/Historia';
+import NuevaNoticia from './Components/Administrador/NuevaNoticia';
+import VerNoticias from './Components/Administrador/VerNoticias';
+import DetalleNoticia from './Components/Administrador/DetalleNoticia';
 
 function App() {
   return (
@@ -43,6 +46,15 @@ function App() {
         </Route>
         <Route path="/historia" exact>
           <Historia />
+        </Route>
+        <Route path="/nuevaNoticia" exact>
+          <NuevaNoticia />
+        </Route>
+        <Route path="/verNoticias" exact>
+          <VerNoticias />
+        </Route>
+        <Route path="/detalleNoticia" exact>
+          <DetalleNoticia />
         </Route>
       </Switch>
     </div>
