@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 // import { auth } from 'firebase';
+import { useForm, useStep } from "react-hooks-helper";
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
 const RegistrarBombero = (props) => {
 
     const classes = useStyles();
-
+    const [error, setError] = React.useState('');
+    const myForm = React.useRef(null);
     const [nombre, setNombre] = React.useState('');
     const [apellido, setApellido] = React.useState('');
     const [dni, setDni] = React.useState('');
@@ -83,6 +86,16 @@ const RegistrarBombero = (props) => {
         props.history.push('/admin-inicio');
     })
 
+    const verificar = () => {
+      if (!myForm.current.checkValidity()) {
+        setError('Por favor ingrese los campos requeridos');
+        return;
+     }
+     else {
+      agregarUsuario();
+     }
+     
+    }
 
     return (
         <div>
@@ -98,6 +111,12 @@ const RegistrarBombero = (props) => {
             </Breadcrumbs>
             </div>
             <div className={classes.root}>
+            <form ref={myForm}>
+      {
+              error ? (
+                <Alert severity="error">{error}</Alert>    
+            ) : null
+            }
         <Grid container spacing={3} >
             <Grid item xs={12} sm={6}>
             <TextField
@@ -211,11 +230,12 @@ const RegistrarBombero = (props) => {
             />
           </Grid>
           <Grid item xs={12} sm={12}>
-          <Button variant="contained" color="primary" onClick={() => agregarUsuario()}>
+          <Button variant="contained" color="primary" onClick={() => verificar()}>
             Guardar Bombero
           </Button>
           </Grid>
           </Grid>
+          </form>
           </div>
             <Footer />
           </div>
